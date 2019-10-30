@@ -31,7 +31,7 @@ end
 
 function Menu:update(dt)
     -- Start the game when the player presses space or return.
-    if love.keyboard.isDown('space', 'return') then
+    if love.keyboard.isDown('return') then
         self:gotoState('Play')
         return
     end
@@ -40,25 +40,33 @@ end
 function Menu:draw()
     -- Draw menu background.
     love.graphics.setColor(255, 255, 255)
+    love.graphics.setBackgroundColor(255, 255, 255)
     local w = images.ground:getWidth()
     local h = images.ground:getHeight()
-    for x = 0, nativeCanvasWidth, w do
-        for y = 0, nativeCanvasHeight, h do
-            love.graphics.draw(images.ground, x, y)
-        end
-    end
+    --for x = 0, nativeCanvasWidth, w do
+    --   for y = 0, nativeCanvasHeight, h do
+    --        love.graphics.draw(images.ground, x, y)
+    --    end
+    --end
 
-    -- Draw title.
-    love.graphics.setFont(fonts.large)
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.printf('Looking For\nFreedom', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 - 200, 1000, 'center')
+    -- Draw menu title.
+    love.graphics.setFont(fonts.PixelManiaMedium)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.printf('LOOKING', nativeCanvasWidth / 2 - 530, nativeCanvasHeight / 2 - 200, 1000, 'center')
+    love.graphics.setFont(fonts.PixelManiaSmall)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.printf('FOR', nativeCanvasWidth / 2 - 370, nativeCanvasHeight / 2 - 185, 1000, 'center')
+    love.graphics.setFont(fonts.PixelManiaLarge)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.printf('FREEDOM', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 - 165, 1000, 'center')
 
     -- Draw "press start" text.
     if math.cos(2 * math.pi * love.timer.getTime()) > 0 then
-        love.graphics.setFont(fonts.medium)
-        love.graphics.setColor(255, 255, 255)
-        love.graphics.printf('Press Start', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 + 150, 1000, 'center')
+        love.graphics.setFont(fonts.PixelOperatorMedium)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.printf('Press \'Enter\' to start', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 + 150, 1000, 'center')
     end
+
 end
 
 ----------------------------------------------------------------------

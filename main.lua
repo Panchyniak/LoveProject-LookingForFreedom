@@ -21,10 +21,21 @@ function love.load()
 
     -- Fonts:
     fonts = {}
+    --
+    fonts.PixelManiaLarge = love.graphics.newFont('assets/fonts/Pixelmania.ttf', 35)
+    fonts.PixelManiaMedium = love.graphics.newFont('assets/fonts/Pixelmania.ttf', 25)
+    fonts.PixelManiaSmall = love.graphics.newFont('assets/fonts/Pixelmania.ttf', 15)
+    --
+    fonts.PixelOperatorLarge = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 35)
+    fonts.PixelOperatorMedium = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 25)
+    fonts.PixelOperatorSmall = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)
+    fonts.PixelOperatorTiny = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)
+    --
     fonts.huge = love.graphics.newFont('assets/fonts/Gamer.ttf', 96)
     fonts.large = love.graphics.newFont('assets/fonts/Gamer.ttf', 72)
     fonts.medium = love.graphics.newFont('assets/fonts/Gamer.ttf', 48)
-  
+    --
+
     -- Images:
     images = {}
     love.graphics.setDefaultFilter('nearest', 'nearest', 1)

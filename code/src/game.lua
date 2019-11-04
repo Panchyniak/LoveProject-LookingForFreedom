@@ -79,8 +79,9 @@ function Play:enteredState()
 
     self.player = Player:new()
     self.bullets = Container:new()
-    --self.enemies = Container:new()
-    --self.director = Director:new()
+    self.enemies = Container:new()
+    self.director = Director:new()
+
     --self.coins = Container:new()
 
     -- score
@@ -94,13 +95,13 @@ function Play:update(dt)
 
     self.player:update(dt)
     self.bullets:update(dt)
-    --self.enemies:update(dt)
+    self.enemies:update(dt)
+    self.director:update(dt)
     
     if self.player.alive == false then
         self:gotoState('GameOver')
     end
 
-    --self.director:update(dt)
     --self.coins:update(dt)
     -- update timer
     --self.timeLeft = self.timeLeft - dt
@@ -129,6 +130,7 @@ function Play:draw()
 
     self.player:draw()
     self.bullets:draw()
+    self.enemies:draw()
 
     -- print score
     --love.graphics.setFont(fonts.large)

@@ -17,8 +17,19 @@ function Player:initialize()
 
 	self.alive = true
 	
-	self.movementSpeed = 3
+	self.movementSpeed = 200
 	self.direction = "center"
+
+	self.scaleFactorX = 3
+	self.scaleFactorY = 3
+
+	--Image has 16 pixels x 16 pixels
+	self.originalWidth = 16 
+	self.originalheight = 16
+
+	self.width = self.scaleFactorX * self.originalWidth
+	self.height = self.scaleFactorY * self.originalheight
+	
 end
 
 function Player:update(dt)
@@ -26,20 +37,62 @@ function Player:update(dt)
     --Get table of all connected Joysticks and pick first one:
 	--local joystick = love.joystick.getJoysticks()[1]
 
+	--[[ if love.keyboard.isDown("up") and love.keyboard.isDown("right") then
+		if self.x + self.width < nativeCanvasWidth and self.y > 0 then
+			self.x = self.x + self.movementSpeed * dt
+			self.y = self.y - self.movementSpeed * dt
+			self.direction = "right"
+		elseif self.x + self.width < nativeCanvasWidth and self.y <= 0 then
+			self.x = self.x + self.movementSpeed * dt
+			self.direction = "right"
+		elseif self.x + self.width >= nativeCanvasWidth and self.y > 0 then
+			self.y = self.y - self.movementSpeed * dt
+			self.direction = "center"
+		end
+	elseif love.keyboard.isDown("down") and love.keyboard.isDown("right") then
+		if self.x + self.width < nativeCanvasWidth and self.y + self.height < nativeCanvasHeight then
+			self.x = self.x + self.movementSpeed * dt
+			self.y = self.y + self.movementSpeed * dt
+			self.direction = "right"
+		elseif self.x + self.width < nativeCanvasWidth and self.y + self.height >= nativeCanvasHeight then
+			self.x = self.x + self.movementSpeed * dt
+			self.direction = "right"
+		elseif self.x + self.width >= nativeCanvasWidth and self.y + self.height < nativeCanvasHeight then
+			self.y = self.y - self.movementSpeed * dt
+			self.direction = "center"
+		end
+	else ]]
 	if love.keyboard.isDown("right") then --or joystick:isGamepadDown("dpright") then
-		self.x = self.x + self.movementSpeed
-		self.direction = "right"
+		if self.x + self.width < nativeCanvasWidth then
+			self.x = self.x + self.movementSpeed * dt
+			self.direction = "right"
+		else
+			self.direction = "right"
+		end
 	elseif love.keyboard.isDown("left") then -- or joystick:isGamepadDown("dpleft") then
-		self.x = self.x - self.movementSpeed
-		self.direction = "left"
+		if self.x > 0 then
+			self.x = self.x - self.movementSpeed * dt
+			self.direction = "left"
+		else
+			self.direction = "left"
+		end
 	end
-
+	
 	if love.keyboard.isDown("down") then --or joystick:isGamepadDown("dpdown") then
-		self.y = self.y + self.movementSpeed
-		self.direction = "center"
+		if self.y + self.height < nativeCanvasHeight then
+			self.y = self.y + self.movementSpeed * dt
+			self.direction = "center"
+		else
+			self.direction = "center"
+		end
+		
 	elseif love.keyboard.isDown("up") then --or joystick:isGamepadDown("dpup") then
-		self.y = self.y - self.movementSpeed
-		self.direction = "center"
+		if self.y > 0 then
+			self.y = self.y - self.movementSpeed * dt
+			self.direction = "center"
+		else
+			self.direction = "center"
+		end
 	end
 
 	-- shooting
@@ -47,9 +100,8 @@ function Player:update(dt)
 		-- Time to wait before next shot.
         if self.triggerReleased and love.timer.getTime() - self.lastShotTime > 0.01 then
 			local gun_x = self.x + 40
-            local gun_y = self.y + 32 * math.sin(self.angle) + 10 * math.cos(self.angle)
-            local angle = self.angle + math.random() * 0.2 - 0.1
-            game.bullets:add(Bullet:new(gun_x, gun_y, angle, 1200))
+            local gun_y = self.y + 32
+            game.bullets:add(Bullet:new(gun_x, gun_y, 20))
             self.lastShotTime = love.timer.getTime()
 
             -- Sound effect.
@@ -79,5 +131,5 @@ function Player:draw()
 		player = images.playerCenter
 	end
 
-	love.graphics.draw(player, self.x, self.y, 0, 3, 3, 0, 0)
+	love.graphics.draw(player, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 0, 0)
 end

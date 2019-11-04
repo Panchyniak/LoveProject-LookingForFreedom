@@ -4,9 +4,17 @@ require 'code/src/game'
 require 'code/src/player'
 require 'code/src/bullet'
 require 'code/src/container'
---require 'code/src/enemy'
+require 'code/src/director'
+require 'code/src/enemies'
+require 'code/src/collision'
 
 function love.load()
+
+    --Setting icon.
+    --local Icon = love.graphics.newImage("Icon.png")
+    --love.window.setIcon(Icon:getData())
+    --love.window.setIcon(Icon.getData(Icon)
+
     -- Setting canvas.
     nativeWindowWidth = 500
     nativeWindowHeight = 600
@@ -29,11 +37,15 @@ function love.load()
     fonts.PixelOperatorLarge = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 35)
     fonts.PixelOperatorMedium = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 25)
     fonts.PixelOperatorSmall = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)
+<<<<<<< HEAD
+    fonts.PixelOperatorTiny = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)    
+=======
     fonts.PixelOperatorTiny = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)
     --
     fonts.huge = love.graphics.newFont('assets/fonts/Gamer.ttf', 96)
     fonts.large = love.graphics.newFont('assets/fonts/Gamer.ttf', 72)
     fonts.medium = love.graphics.newFont('assets/fonts/Gamer.ttf', 48)
+>>>>>>> 27c4bc6cde18169deb4f05beb58ddc8874be3f65
     --
 
     -- Images:
@@ -44,8 +56,11 @@ function love.load()
     images.playerCenter = love.graphics.newImage('assets/images/playerCenter.png')
     images.playerRight = love.graphics.newImage('assets/images/playerRight.png')
     images.playerLeft = love.graphics.newImage('assets/images/playerLeft.png')
-    
-    images.bullet =love.graphics.newImage('assets/images/bullet.png')
+
+    images.bullet = love.graphics.newImage('assets/images/bullet.png')
+
+    images.enemySkull = love.graphics.newImage('assets/images/enemy_skull.png')
+
     -- Musics:
     music = {}
     music.menu = love.audio.newSource('assets/music/menu.wav', 'stream')

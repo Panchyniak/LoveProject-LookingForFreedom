@@ -1,12 +1,13 @@
 -- Importing necessary packages.
 require 'code/lib/misc'
 require 'code/src/game'
+require 'code/src/collision'
 require 'code/src/player'
 require 'code/src/bullet'
 require 'code/src/container'
 require 'code/src/director'
 require 'code/src/enemies'
-require 'code/src/collision'
+require 'code/src/enemy_bullet'
 
 function love.load()
 
@@ -37,15 +38,7 @@ function love.load()
     fonts.PixelOperatorLarge = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 35)
     fonts.PixelOperatorMedium = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 25)
     fonts.PixelOperatorSmall = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)
-<<<<<<< HEAD
     fonts.PixelOperatorTiny = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)    
-=======
-    fonts.PixelOperatorTiny = love.graphics.newFont('assets/fonts/PixelOperator.ttf', 15)
-    --
-    fonts.huge = love.graphics.newFont('assets/fonts/Gamer.ttf', 96)
-    fonts.large = love.graphics.newFont('assets/fonts/Gamer.ttf', 72)
-    fonts.medium = love.graphics.newFont('assets/fonts/Gamer.ttf', 48)
->>>>>>> 27c4bc6cde18169deb4f05beb58ddc8874be3f65
     --
 
     -- Images:
@@ -58,6 +51,7 @@ function love.load()
     images.playerLeft = love.graphics.newImage('assets/images/playerLeft.png')
 
     images.bullet = love.graphics.newImage('assets/images/bullet.png')
+    images.enemyBullet = love.graphics.newImage('assets/images/bullet.png')
 
     images.enemySkull = love.graphics.newImage('assets/images/enemy_skull.png')
 

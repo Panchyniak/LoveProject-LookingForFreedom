@@ -16,7 +16,7 @@ function Container:update(dt)
 end
 
 function Container:draw()
-	for i=1,#self.contents do
+	for i=1, #self.contents do
 		self.contents[i]:draw()
 	end
 end

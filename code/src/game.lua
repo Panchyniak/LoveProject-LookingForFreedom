@@ -80,6 +80,7 @@ function Play:enteredState()
     self.player = Player:new()
     self.bullets = Container:new()
     self.enemies = Container:new()
+    --self.enemy_bullet = Container:new()
     self.director = Director:new()
 
     --self.coins = Container:new()
@@ -96,6 +97,7 @@ function Play:update(dt)
     self.player:update(dt)
     self.bullets:update(dt)
     self.enemies:update(dt)
+    --self.enemy_bullet:update(dt)
     self.director:update(dt)
     
     if self.player.alive == false then
@@ -131,6 +133,7 @@ function Play:draw()
     self.player:draw()
     self.bullets:draw()
     self.enemies:draw()
+    --self.enemy_bullet:draw()
 
     -- print score
     --love.graphics.setFont(fonts.large)

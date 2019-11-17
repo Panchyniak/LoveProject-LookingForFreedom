@@ -101,7 +101,7 @@ function Player:update(dt)
         if self.triggerReleased and love.timer.getTime() - self.lastShotTime > 0.01 then
 			local gun_x = self.x + 40
             local gun_y = self.y + 32
-            game.bullets:add(Bullet:new(gun_x, gun_y, 20))
+			game.bullets:add(Bullet:new(gun_x, gun_y, 20))
             self.lastShotTime = love.timer.getTime()
 
             -- Sound effect.

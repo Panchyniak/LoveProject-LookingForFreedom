@@ -1,4 +1,5 @@
 local class = require 'code/lib/middleclass'
+
 require 'code/src/collision'
 
 Enemy = class('Enemy')
@@ -19,6 +20,7 @@ function Enemy:initialize(x, y, v)
     self.originalheight = 16
     self.width = self.scaleFactorX * self.originalWidth
     self.height = self.scaleFactorY * self.originalheight
+    --self.enemy_bullets = ContainerBullets:new()
 end
 
 function Enemy:update(dt)
@@ -58,6 +60,7 @@ function Enemy:update(dt)
             self.healthPoints = self.healthPoints - 1
             bullet.to_delete = true
         end
+
     end
 
     -- health
@@ -68,11 +71,12 @@ function Enemy:update(dt)
         self.to_delete = true
     end
 
-    if math.random(0, 100) > 80 then -- 20% of shoot.
+    if math.random(0, 100) > 98 then -- 20% of shoot.
 		-- Time to wait before next shot.
             local gun_x = self.x -- self.width + self.width / 2
             local gun_y = self.y
-            game.bullets:add(Bullet:new(gun_x, gun_y, 20))
+            --game.enemy_bullet:add(Enemy_Bullet:new(gun_x, gun_y, 20))
+            game.bullets:add(Enemy_Bullet:new(gun_x, gun_y, 20))
 
             -- Sound effect.
             sounds.gunshot:setPitch(1.17^(2*math.random() - 1))
@@ -83,6 +87,7 @@ function Enemy:update(dt)
     else
        -- self.triggerReleased = true
     end
+
 
 end
 

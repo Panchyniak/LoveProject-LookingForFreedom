@@ -1,14 +1,14 @@
 local class = require 'code/lib/middleclass'
 
-Bullet = class('Bullet')
+Enemy_Bullet = class('Enemy_Bullet')
 
-function Bullet:initialize(x, y, v)
+function Enemy_Bullet:initialize(x, y, v)
     self.x = x
     self.y = y
-    self.angle = a
-    self.vx = v * math.cos(a)
-    self.vy = v * math.sin(a)
-    self.radius = 3
+    --self.angle = a
+    --self.vx = v * math.cos(a)
+    --self.vy = v * math.sin(a)
+    --self.radius = 3
     self.startTime = love.timer.getTime()
     self.speed = v
     self.scaleFactorX = 1
@@ -17,29 +17,22 @@ function Bullet:initialize(x, y, v)
 	self.originalheight = 16
 	self.width = self.scaleFactorX * self.originalWidth
     self.height = self.scaleFactorY * self.originalheight
-    self.draw = draw
-    self.playerPositionX = game.player.x
-    self.playerPositionY = game.player.y
+    --self.draw = images.bullet
+    --self.playerPositionX = game.player.x
+    --self.playerPositionY = game.player.y
 end
 
-function Bullet:update(dt)
+function Enemy_Bullet:update(dt)
 
-    -- movement
-    local vx = self.speed * math.cos(self.angle)
-    local vy = self.speed * math.sin(self.angle)
-
-    local d = math.sqrt(playerPositionX ^ 2 + playerPositionY ^ 2)
-    if d > 10 then
-        self.x = self.x + vx * dt
-        self.y = self.y - vy * dt
-    end
+    self.y = self.y + self.speed
 
     if love.timer.getTime() - self.startTime > 3 then
         self.to_delete = true
     end
+
 end
 
-function Bullet:draw()
+function Enemy_Bullet:draw()
     love.graphics.setColor(255, 255, 255)
-    love.graphics.draw(self.draw, self.x, self.y, self.angle, self.scaleFactorX, self.scaleFactorY, 8, 8)
+    love.graphics.draw(images.enemyBullet, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 8, 8)
 end

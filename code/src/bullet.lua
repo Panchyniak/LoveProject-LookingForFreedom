@@ -25,6 +25,6 @@ function Bullet:update(dt)
 end
 
 function Bullet:draw()
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(0, 0, 255)
     love.graphics.draw(images.bullet, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 8, 8)
 end

@@ -7,7 +7,6 @@ Enemy = class('Enemy')
 function Enemy:initialize(x, y, v)
     self.x = x
     self.y = y
-    --self.radius = 22
     self.angle = 0
     self.speed = v
     self.healthPoints = math.random(0, 5)
@@ -20,7 +19,7 @@ function Enemy:initialize(x, y, v)
     self.originalheight = 16
     self.width = self.scaleFactorX * self.originalWidth
     self.height = self.scaleFactorY * self.originalheight
-    --self.enemy_bullets = ContainerBullets:new()
+    --self.bullets = Container:new()
 end
 
 function Enemy:update(dt)
@@ -63,35 +62,30 @@ function Enemy:update(dt)
 
     end
 
-    -- health
     if self.healthPoints <= 0 then
-        -- score
-        --game.score = game.score + 1
-
+        -- Increasing the score.
+        game.score = game.score + 1
+        -- Removing the enemy that don't have health anymore.
         self.to_delete = true
     end
 
-    if math.random(0, 100) > 98 then -- 20% of shoot.
+    if math.random(0, 100) > 98 then -- 2% of shoot.
 		-- Time to wait before next shot.
-            local gun_x = self.x -- self.width + self.width / 2
-            local gun_y = self.y
-            --game.enemy_bullet:add(Enemy_Bullet:new(gun_x, gun_y, 20))
-            game.bullets:add(Enemy_Bullet:new(gun_x, gun_y, 20))
+            local gun_x = self.x - self.width + self.width / 2
+            local gun_y = self.y - 2
+            game.bullets:add(Enemy_Bullet:new(gun_x, gun_y, 5))
 
             -- Sound effect.
             sounds.gunshot:setPitch(1.17^(2*math.random() - 1))
             sounds.gunshot:stop()
             sounds.gunshot:play()
-
-        --self.triggerReleased = false
     else
-       -- self.triggerReleased = true
-    end
 
+    end
 
 end
 
 function Enemy:draw()
     love.graphics.setColor(255, 255, 255)
-    love.graphics.draw(images.enemySkull, self.x, self.y, self.angle, self.scaleFactorX, self.scaleFactorY, 16, 22)
+    love.graphics.draw(images.enemySkull, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 16, 22)
 end

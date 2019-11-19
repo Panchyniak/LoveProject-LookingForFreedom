@@ -23,13 +23,14 @@ function Player:initialize()
 	self.scaleFactorX = 3
 	self.scaleFactorY = 3
 
-	--Image has 16 pixels x 16 pixels
+	--Image has 16 pixels x 16 pixels.
 	self.originalWidth = 16 
 	self.originalheight = 16
 
 	self.width = self.scaleFactorX * self.originalWidth
 	self.height = self.scaleFactorY * self.originalheight
 	
+	self.healthPoints = 5
 end
 
 function Player:update(dt)
@@ -95,13 +96,13 @@ function Player:update(dt)
 		end
 	end
 
-	-- shooting
+	-- Shooting.
 	if love.keyboard.isDown('space') then
 		-- Time to wait before next shot.
         if self.triggerReleased and love.timer.getTime() - self.lastShotTime > 0.01 then
 			local gun_x = self.x + 40
             local gun_y = self.y + 32
-			game.bullets:add(Bullet:new(gun_x, gun_y, 20))
+			game.bullets:add(Bullet:new(gun_x, gun_y - 50, 20))
             self.lastShotTime = love.timer.getTime()
 
             -- Sound effect.
@@ -113,7 +114,23 @@ function Player:update(dt)
         self.triggerReleased = false
     else
         self.triggerReleased = true
+	end
+	
+	-- Check bullet and enemy collision.
+    for i=1, #game.bullets.contents do
+        local bullet = game.bullets.contents[i]
+        
+        if CheckCollision(bullet.x, bullet.y, bullet.width, bullet.height, self.x, self.y, self.width, self.height) then
+            self.healthPoints = self.healthPoints - 1
+            bullet.to_delete = true
+        end
+
+		if self.healthPoints <= 0 then
+			self.alive = false
+		end
+
     end
+
 end
 
 function Player:draw()

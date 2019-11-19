@@ -11,7 +11,7 @@ require 'code/src/enemy_bullet'
 
 function love.load()
 
-    --Setting icon.
+    -- Setting game icon.
     --local Icon = love.graphics.newImage("Icon.png")
     --love.window.setIcon(Icon:getData())
     --love.window.setIcon(Icon.getData(Icon)
@@ -46,6 +46,7 @@ function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest', 1)
 
     images.ground = love.graphics.newImage('assets/images/ground.png')
+    images.groundBlack = love.graphics.newImage('assets/images/ground_black.png')
     images.playerCenter = love.graphics.newImage('assets/images/playerCenter.png')
     images.playerRight = love.graphics.newImage('assets/images/playerRight.png')
     images.playerLeft = love.graphics.newImage('assets/images/playerLeft.png')
@@ -55,6 +56,9 @@ function love.load()
 
     images.enemySkull = love.graphics.newImage('assets/images/enemy_skull.png')
 
+    images.background = love.graphics.newImage('assets/images/Background.png')
+    images.backgroundTwo = love.graphics.newImage('assets/images/Background.png')
+    
     -- Musics:
     music = {}
     music.menu = love.audio.newSource('assets/music/menu.wav', 'stream')
@@ -68,6 +72,7 @@ function love.load()
     -- Sounds:
     sounds = {}
     sounds.gunshot = love.audio.newSource('assets/sounds/gunshot.wav', 'static')
+    sounds.gameover = love.audio.newSource('assets/sounds/Sad_Trombone.wav', 'static')
     --sounds.footstep = love.audio.newSource('assets/sounds/footstep.wav', 'static')
     --sounds.footstep:setVolume(0.1)
 
@@ -91,11 +96,19 @@ function love.load()
 
     -- Loading the game menu state.
     game = Game:new('Menu')
+
+    backgroundProperties = {
+        x = 0;
+        y = 0;
+        y2 = 0 - images.background:getHeight();
+        speed = 30;
+    }
+
 end
 
 function love.update(dt)
 
-    -- Determine window scale and offset
+    -- Determine window scale and offset.
     windowScaleX = love.graphics.getWidth() / nativeWindowWidth
     windowScaleY = love.graphics.getHeight() / nativeWindowHeight
     windowScale = math.min(windowScaleX, windowScaleY)
@@ -106,7 +119,6 @@ function love.update(dt)
     game:update(dt)
 end
 
-
 function love.draw()
 
     -- Draw everything to canvas of native size, then upscale and offset.
@@ -116,7 +128,7 @@ function love.draw()
     love.graphics.setColor(255, 255, 255)
     shaders.draw(function () love.graphics.draw(canvas, windowOffsetX, windowOffsetY, 0, windowScale, windowScale) end)
 
-    -- letterboxing
+    -- Letterboxing.
     local windowWidth = love.graphics.getWidth()
     local windowHeight = love.graphics.getHeight()
     love.graphics.setColor(0, 0, 0)

@@ -20,12 +20,14 @@ GameOver = Game:addState('GameOver')
 ----------------------------------------------------------------------
 
 function Menu:enteredState()
-    -- music
+    -- Playing music.
     music.menu:play()
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.setBackgroundColor(255, 255, 255)
 end
 
 function Menu:exitedState()
-    -- music
+    -- Playing music.
     music.menu:stop()
 end
 
@@ -35,19 +37,16 @@ function Menu:update(dt)
         self:gotoState('Play')
         return
     end
+
 end
 
 function Menu:draw()
+
     -- Draw menu background.
     love.graphics.setColor(255, 255, 255)
     love.graphics.setBackgroundColor(255, 255, 255)
     local w = images.ground:getWidth()
     local h = images.ground:getHeight()
-    --for x = 0, nativeCanvasWidth, w do
-    --   for y = 0, nativeCanvasHeight, h do
-    --        love.graphics.draw(images.ground, x, y)
-    --    end
-    --end
 
     -- Draw menu title.
     love.graphics.setFont(fonts.PixelManiaMedium)
@@ -74,86 +73,123 @@ end
 ----------------------------------------------------------------------
 
 function Play:enteredState()
-    -- music
+
+    -- Playing music.
     music.main:play()
 
     self.player = Player:new()
     self.bullets = Container:new()
     self.enemies = Container:new()
-    --self.enemy_bullet = Container:new()
     self.director = Director:new()
 
-    --self.coins = Container:new()
-
-    -- score
-    --self.score = 0
-
-    -- timer
-    --self.timeLeft = 30
+    -- Setting score initial value.
+    self.score = 0
 end
 
 function Play:update(dt)
 
+    backgroundProperties.y = backgroundProperties.y + backgroundProperties.speed * dt
+    backgroundProperties.y2 = backgroundProperties.y2 + backgroundProperties.speed * dt
+
+    if backgroundProperties.y > nativeCanvasHeight then
+        backgroundProperties.y = backgroundProperties.y2 - images.backgroundTwo:getHeight()
+    end
+
+    if backgroundProperties.y2 > nativeCanvasHeight then
+        backgroundProperties.y2 = backgroundProperties.y - images.background:getHeight()
+    end
+
     self.player:update(dt)
     self.bullets:update(dt)
     self.enemies:update(dt)
-    --self.enemy_bullet:update(dt)
     self.director:update(dt)
     
     if self.player.alive == false then
         self:gotoState('GameOver')
     end
 
-    --self.coins:update(dt)
-    -- update timer
-    --self.timeLeft = self.timeLeft - dt
-    --if self.timeLeft < 0 then
-    --    self:gotoState('GameOver')
-    --    return
-    --end
-
-    -- back to menu
+    -- Back to menu when escape is pressed.
     if love.keyboard.isDown('escape') then
-        self:gotoState('Menu')
+        self:gotoState('GameOver')
         return
     end
 end
 
 function Play:draw()
+
     -- Draw background.
+
     love.graphics.setColor(255, 255, 255)
+    love.graphics.draw(images.background, backgroundProperties.x, backgroundProperties.y)
+    love.graphics.draw(images.backgroundTwo, backgroundProperties.x, backgroundProperties.y2)
+
+    --[[ love.graphics.setColor(255, 255, 255)
     local w = images.ground:getWidth()
     local h = images.ground:getHeight()
     for x = 0, nativeCanvasWidth, w do
-        for y = 0, nativeCanvasHeight, h do
+       for y = 0, nativeCanvasHeight, h do
             love.graphics.draw(images.ground, x, y)
         end
-    end
+    end ]]
 
     self.player:draw()
     self.bullets:draw()
     self.enemies:draw()
-    --self.enemy_bullet:draw()
 
-    -- print score
-    --love.graphics.setFont(fonts.large)
-    --love.graphics.setColor(255, 255, 255)
-    --love.graphics.printf(self.score, nativeCanvasWidth - 1000 - 20, 0, 1000, 'right')
+    -- Print score.
+    love.graphics.setFont(fonts.PixelManiaSmall)
+    love.graphics.setColor(0, 0, 0)
+    --love.graphics.printf("SCORE " .. self.score, nativeCanvasWidth - 1350, 560, 1000, 'right')
+    love.graphics.printf("SCORE " .. self.score, 20, 560, 1000, 'left')
 
-    -- print timer
-    --love.graphics.setFont(fonts.large)
-    --love.graphics.setColor(255, 255, 255)
-    --local seconds = round(self.timeLeft)
-    --if seconds < 10 then
-    --    if math.cos(self.timeLeft * 12) > 0 then
-    --        love.graphics.printf('0:0' .. seconds, 20, 0, 1000, 'left')
-    --    end
-    --else
-    --    love.graphics.printf('0:' .. seconds, 20, 0, 1000, 'left')
-    --end
 end
 
 function Play:exitedState()
-    -- music
+    -- Playing music.
+    music.main:stop()
+end
+
+----------------------------------------------------------------------
+-----------------------------Gameover State---------------------------
+----------------------------------------------------------------------
+
+function GameOver:enteredState()
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.setBackgroundColor(0, 0, 0)
+
+    sounds.gameover:setPitch(1.17^(2*math.random() - 1))
+    sounds.gameover:stop()
+    sounds.gameover:play()
+end
+
+function GameOver:update(dt)
+    if love.keyboard.isDown('return') then
+        self:gotoState('Play')
+        return
+    end
+end
+
+function GameOver:draw()
+
+    -- Draw gameover background.
+    love.graphics.setColor(0, 0, 0)
+    local w = images.groundBlack:getWidth()
+    local h = images.groundBlack:getHeight()
+    for x = 0, nativeCanvasWidth, w do
+       for y = 0, nativeCanvasHeight, h do
+            love.graphics.draw(images.ground, x, y)
+        end
+    end
+
+    -- Draw gameover title.
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.setFont(fonts.PixelManiaMedium)
+    love.graphics.printf('VOCE', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 - 200, 1000, 'center')
+    love.graphics.printf('REPROVOU', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 - 150, 1000, 'center')
+
+end
+
+function GameOver:exitedState()
+    -- Playing music.
     music.main:stop()
 end

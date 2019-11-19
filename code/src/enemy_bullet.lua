@@ -17,9 +17,9 @@ function Enemy_Bullet:initialize(x, y, v)
 	self.originalheight = 16
 	self.width = self.scaleFactorX * self.originalWidth
     self.height = self.scaleFactorY * self.originalheight
-    --self.draw = images.bullet
-    --self.playerPositionX = game.player.x
-    --self.playerPositionY = game.player.y
+    self.image = images.bullet
+    self.playerPositionX = game.player.x
+    self.playerPositionY = game.player.y
 end
 
 function Enemy_Bullet:update(dt)
@@ -33,6 +33,6 @@ function Enemy_Bullet:update(dt)
 end
 
 function Enemy_Bullet:draw()
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.draw(images.enemyBullet, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 8, 8)
+    love.graphics.setColor(255, 0, 0)
+    love.graphics.draw(self.image, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 8, 8)
 end

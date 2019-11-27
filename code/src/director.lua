@@ -12,14 +12,12 @@ function Director:update(dt)
 
     -- Add a new enemy.
     if self.time > self.nextSpawnTime then
-        --local angle = math.random() * 2 * math.pi
-        --nativeCanvasWidth/2 + (nativeCanvasWidth + 30) * math.cos(angle)
+
         local x = math.random(0, love.graphics.getWidth() - 48) -- 48 is the enemy width.
         if x < 0 then
             x = 0
         end
 
-        --nativeCanvasHeight/2 + (nativeCanvasHeight + 30) * math.sin(angle)
         local y = -48 -- 48 is the enemy height.
         local v = 100 + math.random(0, 30)
 

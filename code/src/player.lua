@@ -29,48 +29,23 @@ function Player:initialize()
 
 	self.width = self.scaleFactorX * self.originalWidth
 	self.height = self.scaleFactorY * self.originalheight
-	
-	self.healthPoints = 5
+
+	self.maxHealthPoints = 10
+	self.healthPoints = self.maxHealthPoints
+	self.drawPoints = 150 / self.maxHealthPoints
+
 end
 
 function Player:update(dt)
 
-    --Get table of all connected Joysticks and pick first one:
-	--local joystick = love.joystick.getJoysticks()[1]
-
-	--[[ if love.keyboard.isDown("up") and love.keyboard.isDown("right") then
-		if self.x + self.width < nativeCanvasWidth and self.y > 0 then
-			self.x = self.x + self.movementSpeed * dt
-			self.y = self.y - self.movementSpeed * dt
-			self.direction = "right"
-		elseif self.x + self.width < nativeCanvasWidth and self.y <= 0 then
-			self.x = self.x + self.movementSpeed * dt
-			self.direction = "right"
-		elseif self.x + self.width >= nativeCanvasWidth and self.y > 0 then
-			self.y = self.y - self.movementSpeed * dt
-			self.direction = "center"
-		end
-	elseif love.keyboard.isDown("down") and love.keyboard.isDown("right") then
-		if self.x + self.width < nativeCanvasWidth and self.y + self.height < nativeCanvasHeight then
-			self.x = self.x + self.movementSpeed * dt
-			self.y = self.y + self.movementSpeed * dt
-			self.direction = "right"
-		elseif self.x + self.width < nativeCanvasWidth and self.y + self.height >= nativeCanvasHeight then
-			self.x = self.x + self.movementSpeed * dt
-			self.direction = "right"
-		elseif self.x + self.width >= nativeCanvasWidth and self.y + self.height < nativeCanvasHeight then
-			self.y = self.y - self.movementSpeed * dt
-			self.direction = "center"
-		end
-	else ]]
-	if love.keyboard.isDown("right") then --or joystick:isGamepadDown("dpright") then
+	if love.keyboard.isDown("right") then
 		if self.x + self.width < nativeCanvasWidth then
 			self.x = self.x + self.movementSpeed * dt
 			self.direction = "right"
 		else
 			self.direction = "right"
 		end
-	elseif love.keyboard.isDown("left") then -- or joystick:isGamepadDown("dpleft") then
+	elseif love.keyboard.isDown("left") then
 		if self.x > 0 then
 			self.x = self.x - self.movementSpeed * dt
 			self.direction = "left"
@@ -79,7 +54,7 @@ function Player:update(dt)
 		end
 	end
 	
-	if love.keyboard.isDown("down") then --or joystick:isGamepadDown("dpdown") then
+	if love.keyboard.isDown("down") then
 		if self.y + self.height < nativeCanvasHeight then
 			self.y = self.y + self.movementSpeed * dt
 			self.direction = "center"
@@ -87,7 +62,7 @@ function Player:update(dt)
 			self.direction = "center"
 		end
 		
-	elseif love.keyboard.isDown("up") then --or joystick:isGamepadDown("dpup") then
+	elseif love.keyboard.isDown("up") then
 		if self.y > 0 then
 			self.y = self.y - self.movementSpeed * dt
 			self.direction = "center"
@@ -117,8 +92,8 @@ function Player:update(dt)
 	end
 	
 	-- Check bullet and enemy collision.
-    for i=1, #game.bullets.contents do
-        local bullet = game.bullets.contents[i]
+    for i=1, #game.enemyBullets.contents do
+        local bullet = game.enemyBullets.contents[i]
         
         if CheckCollision(bullet.x, bullet.y, bullet.width, bullet.height, self.x, self.y, self.width, self.height) then
             self.healthPoints = self.healthPoints - 1
@@ -128,9 +103,7 @@ function Player:update(dt)
 		if self.healthPoints <= 0 then
 			self.alive = false
 		end
-
     end
-
 end
 
 function Player:draw()
@@ -149,4 +122,17 @@ function Player:draw()
 	end
 
 	love.graphics.draw(player, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 0, 0)
+	if ((self.healthPoints * 100) / self.maxHealthPoints) >= 70 then
+		love.graphics.setColor(0, 255, 0)
+	elseif ((self.healthPoints * 100) / self.maxHealthPoints) < 70 and ((self.healthPoints * 100) / self.maxHealthPoints) > 30 then
+		love.graphics.setColor(255, 255, 0)
+	else
+		love.graphics.setColor(255, 0, 0)
+	end
+
+	love.graphics.rectangle("fill", 330, 565, self.drawPoints * self.healthPoints, 20)
+
+	love.graphics.setColor(0, 0, 0)
+	love.graphics.rectangle("line", 330, 565, 150, 20)
+
 end

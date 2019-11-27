@@ -7,14 +7,14 @@ require 'code/src/bullet'
 require 'code/src/container'
 require 'code/src/director'
 require 'code/src/enemies'
-require 'code/src/enemy_bullet'
+require 'code/src/enemyBullets'
 
 function love.load()
 
     -- Setting game icon.
-    --local Icon = love.graphics.newImage("Icon.png")
-    --love.window.setIcon(Icon:getData())
-    --love.window.setIcon(Icon.getData(Icon)
+    --local Icon = love.graphics.newImage('assets/images/enemy_skull.png')
+    --love.window.setIcon(Icon.getData())
+    --love.window.setIcon(Icon.getData(Icon))
 
     -- Setting canvas.
     nativeWindowWidth = 500

@@ -45,8 +45,6 @@ function Menu:draw()
     -- Draw menu background.
     love.graphics.setColor(255, 255, 255)
     love.graphics.setBackgroundColor(255, 255, 255)
-    local w = images.ground:getWidth()
-    local h = images.ground:getHeight()
 
     -- Draw menu title.
     love.graphics.setFont(fonts.PixelManiaMedium)
@@ -79,6 +77,7 @@ function Play:enteredState()
 
     self.player = Player:new()
     self.bullets = Container:new()
+    self.enemyBullets = Container:new()
     self.enemies = Container:new()
     self.director = Director:new()
 
@@ -101,6 +100,7 @@ function Play:update(dt)
 
     self.player:update(dt)
     self.bullets:update(dt)
+    self.enemyBullets:update(dt)
     self.enemies:update(dt)
     self.director:update(dt)
     
@@ -123,17 +123,9 @@ function Play:draw()
     love.graphics.draw(images.background, backgroundProperties.x, backgroundProperties.y)
     love.graphics.draw(images.backgroundTwo, backgroundProperties.x, backgroundProperties.y2)
 
-    --[[ love.graphics.setColor(255, 255, 255)
-    local w = images.ground:getWidth()
-    local h = images.ground:getHeight()
-    for x = 0, nativeCanvasWidth, w do
-       for y = 0, nativeCanvasHeight, h do
-            love.graphics.draw(images.ground, x, y)
-        end
-    end ]]
-
     self.player:draw()
     self.bullets:draw()
+    self.enemyBullets:draw()
     self.enemies:draw()
 
     -- Print score.
@@ -186,6 +178,10 @@ function GameOver:draw()
     love.graphics.setFont(fonts.PixelManiaMedium)
     love.graphics.printf('VOCE', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 - 200, 1000, 'center')
     love.graphics.printf('REPROVOU', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 - 150, 1000, 'center')
+
+    love.graphics.setFont(fonts.PixelOperatorMedium)
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.printf('Press \'Enter\' to restart', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 + 150, 1000, 'center')
 
 end
 

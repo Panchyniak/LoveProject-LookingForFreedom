@@ -121,7 +121,9 @@ function Player:draw()
 		player = images.playerCenter
 	end
 
+	--love.graphics.setColor(0, 0, 0)
 	love.graphics.draw(player, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 0, 0)
+
 	if ((self.healthPoints * 100) / self.maxHealthPoints) >= 70 then
 		love.graphics.setColor(0, 255, 0)
 	elseif ((self.healthPoints * 100) / self.maxHealthPoints) < 70 and ((self.healthPoints * 100) / self.maxHealthPoints) > 30 then

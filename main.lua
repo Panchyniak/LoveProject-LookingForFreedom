@@ -55,9 +55,14 @@ function love.load()
     images.enemyBullet = love.graphics.newImage('assets/images/bullet.png')
 
     images.enemySkull = love.graphics.newImage('assets/images/enemy_skull.png')
+    images.enemyProcessor = love.graphics.newImage('assets/images/enemy_processor.png')
+    images.enemyBossLevelOne = love.graphics.newImage('assets/images/EnemyBossLevelOne.png')
 
-    images.background = love.graphics.newImage('assets/images/Background.png')
-    images.backgroundTwo = love.graphics.newImage('assets/images/Background.png')
+    images.backgroundLevelOne = love.graphics.newImage('assets/images/BackgroundLevelOne.png')
+    images.backgroundLevelOneAux = love.graphics.newImage('assets/images/BackgroundLevelOne.png')
+
+    images.backgroundLevelOneBoss = love.graphics.newImage('assets/images/BackgroundLevelOneBoss.png')
+    images.backgroundLevelOneBossAux = love.graphics.newImage('assets/images/BackgroundLevelOneBoss.png')
     
     -- Musics:
     music = {}
@@ -100,8 +105,8 @@ function love.load()
     backgroundProperties = {
         x = 0;
         y = 0;
-        y2 = 0 - images.background:getHeight();
-        speed = 30;
+        y2 = 0 - images.backgroundLevelOne:getHeight();
+        speed = 40;
     }
 
 end

@@ -22,6 +22,7 @@ function Enemy:initialize(x, y, v)
     self.yLimit = math.random(1, 5)
     self.isGoingToRightSide = true
     self.isGoingToLeftSide = true
+    self.EnemyType = math.random(0, 1)
 end
 
 function Enemy:update(dt)
@@ -117,5 +118,10 @@ end
 
 function Enemy:draw()
     love.graphics.setColor(255, 255, 255)
-    love.graphics.draw(images.enemySkull, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 16, 22)
+    if self.EnemyType == 0 then
+        love.graphics.draw(images.enemySkull, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 16, 22)
+    elseif self.EnemyType == 1 then
+        love.graphics.draw(images.enemyProcessor, self.x, self.y, 0, self.scaleFactorX, self.scaleFactorY, 16, 22)
+    end
+    
 end

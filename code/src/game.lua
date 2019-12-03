@@ -7,23 +7,35 @@ Game = class('Game')
 Game:include(stateful)
 
 function Game:initialize(state)
+    self.level = 1
+    self.score = 0
+    --self.player = Player:new()
     self:gotoState(state)
 end
 
 -- Adding new states to the class "Game".
 Menu = Game:addState('Menu')
 Play = Game:addState('Play')
+PlayLevelOne = Game:addState('PlayLevelOne')
+PlayLevelOneBoss = Game:addState('PlayLevelOneBoss')
+PlayLevelTwo = Game:addState('PlayLevelTwo')
 GameOver = Game:addState('GameOver')
+YouWin = Game:addState('YouWin')
 
 ----------------------------------------------------------------------
 ------------------------------Menu State------------------------------
 ----------------------------------------------------------------------
 
 function Menu:enteredState()
+    self.score = 0
+    --self.player = 10
     -- Playing music.
     music.menu:play()
+    -- Setting background color.
+
     love.graphics.setColor(255, 255, 255)
     love.graphics.setBackgroundColor(255, 255, 255)
+
 end
 
 function Menu:exitedState()
@@ -32,9 +44,10 @@ function Menu:exitedState()
 end
 
 function Menu:update(dt)
-    -- Start the game when the player presses space or return.
+
+    -- Start the game when the player press space or return.
     if love.keyboard.isDown('return') then
-        self:gotoState('Play')
+        self:gotoState('PlayLevelOne')
         return
     end
 
@@ -67,14 +80,15 @@ function Menu:draw()
 end
 
 ----------------------------------------------------------------------
-------------------------------Play State------------------------------
+-------------------------Play Level One State-------------------------
 ----------------------------------------------------------------------
 
-function Play:enteredState()
+function PlayLevelOne:enteredState()
 
     -- Playing music.
     music.main:play()
-
+    
+    -- Creating new objects.
     self.player = Player:new()
     self.bullets = Container:new()
     self.enemyBullets = Container:new()
@@ -83,19 +97,20 @@ function Play:enteredState()
 
     -- Setting score initial value.
     self.score = 0
+    --self.player.healthPoints = 20
 end
 
-function Play:update(dt)
+function PlayLevelOne:update(dt)
 
     backgroundProperties.y = backgroundProperties.y + backgroundProperties.speed * dt
     backgroundProperties.y2 = backgroundProperties.y2 + backgroundProperties.speed * dt
 
     if backgroundProperties.y > nativeCanvasHeight then
-        backgroundProperties.y = backgroundProperties.y2 - images.backgroundTwo:getHeight()
+        backgroundProperties.y = backgroundProperties.y2 - images.backgroundLevelOneAux:getHeight()
     end
 
     if backgroundProperties.y2 > nativeCanvasHeight then
-        backgroundProperties.y2 = backgroundProperties.y - images.background:getHeight()
+        backgroundProperties.y2 = backgroundProperties.y - images.backgroundLevelOne:getHeight()
     end
 
     self.player:update(dt)
@@ -103,6 +118,85 @@ function Play:update(dt)
     self.enemyBullets:update(dt)
     self.enemies:update(dt)
     self.director:update(dt)
+    
+    -- Go to gameover state when the player deads.
+    if self.player.alive == false then
+        self:gotoState('GameOver')
+    end
+
+    -- Back to menu when escape is pressed.
+    if love.keyboard.isDown('escape') then
+        self.level = 1
+        self:gotoState('GameOver')
+        return
+    end
+
+    -- Back to menu when escape is pressed.
+    if self.score >= 200 then
+        self.level = 2
+        self:gotoState('PlayLevelOneBoss')
+        return
+    end
+end
+
+function PlayLevelOne:draw()
+
+    -- Draw background.
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.draw(images.backgroundLevelOne, backgroundProperties.x, backgroundProperties.y)
+    love.graphics.draw(images.backgroundLevelOneAux, backgroundProperties.x, backgroundProperties.y2)
+
+    self.player:draw()
+    self.bullets:draw()
+    self.enemyBullets:draw()
+    self.enemies:draw()
+
+    -- Print score.
+    love.graphics.setFont(fonts.PixelManiaSmall)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.printf("SCORE " .. self.score, 20, 560, 1000, 'left')
+
+end
+
+function PlayLevelOne:exitedState()
+    -- Stopping music.
+    music.main:stop()    
+end
+
+----------------------------------------------------------------------
+----------------------Play Level One Boss State-----------------------
+----------------------------------------------------------------------
+
+function PlayLevelOneBoss:enteredState()
+
+    -- Playing music.
+    music.main:play()
+
+    self.player = Container:new()
+    self.bullets = Container:new()
+    self.bossLevelOne = Container:new()
+    self.bossBullets = Container:new()
+    backgroundProperties.speed = 60
+
+end
+
+function PlayLevelOneBoss:update(dt)
+
+    backgroundProperties.y = backgroundProperties.y + backgroundProperties.speed * dt
+    backgroundProperties.y2 = backgroundProperties.y2 + backgroundProperties.speed * dt
+
+    if backgroundProperties.y > nativeCanvasHeight then
+        backgroundProperties.y = backgroundProperties.y2 - images.backgroundLevelOneBossAux:getHeight()
+    end
+
+    if backgroundProperties.y2 > nativeCanvasHeight then
+        backgroundProperties.y2 = backgroundProperties.y - images.backgroundLevelOneBoss:getHeight()
+    end
+
+    self.player:update(dt)
+    self.bullets:update(dt)
+    self.bossLevelOne:update(dt)
+    self.bossBullets:update(dt)
     
     if self.player.alive == false then
         self:gotoState('GameOver')
@@ -115,29 +209,26 @@ function Play:update(dt)
     end
 end
 
-function Play:draw()
+function PlayLevelOneBoss:draw()
 
     -- Draw background.
-
     love.graphics.setColor(255, 255, 255)
-    love.graphics.draw(images.background, backgroundProperties.x, backgroundProperties.y)
-    love.graphics.draw(images.backgroundTwo, backgroundProperties.x, backgroundProperties.y2)
+    love.graphics.draw(images.backgroundLevelOneBoss, backgroundProperties.x, backgroundProperties.y)
+    love.graphics.draw(images.backgroundLevelOneBossAux, backgroundProperties.x, backgroundProperties.y2)
 
     self.player:draw()
     self.bullets:draw()
     self.enemyBullets:draw()
-    self.enemies:draw()
 
     -- Print score.
     love.graphics.setFont(fonts.PixelManiaSmall)
     love.graphics.setColor(0, 0, 0)
-    --love.graphics.printf("SCORE " .. self.score, nativeCanvasWidth - 1350, 560, 1000, 'right')
     love.graphics.printf("SCORE " .. self.score, 20, 560, 1000, 'left')
 
 end
 
-function Play:exitedState()
-    -- Playing music.
+function PlayLevelOneBoss:exitedState()
+    -- Stopping music.
     music.main:stop()
 end
 
@@ -146,17 +237,21 @@ end
 ----------------------------------------------------------------------
 
 function GameOver:enteredState()
+
+    self.player.healthPoints = 10
+    -- Setting background color.
     love.graphics.setColor(0, 0, 0)
     love.graphics.setBackgroundColor(0, 0, 0)
 
+    -- playing gameover sound.
     sounds.gameover:setPitch(1.17^(2*math.random() - 1))
     sounds.gameover:stop()
     sounds.gameover:play()
 end
 
 function GameOver:update(dt)
-    if love.keyboard.isDown('return') then
-        self:gotoState('Play')
+    if love.keyboard.isDown('space') then
+        self:gotoState('PlayLevelOne')
         return
     end
 end
@@ -181,11 +276,11 @@ function GameOver:draw()
 
     love.graphics.setFont(fonts.PixelOperatorMedium)
     love.graphics.setColor(255, 255, 255)
-    love.graphics.printf('Press \'Enter\' to restart', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 + 150, 1000, 'center')
+    love.graphics.printf('Press \'space\' to restart', nativeCanvasWidth / 2 - 500, nativeCanvasHeight / 2 + 150, 1000, 'center')
 
 end
 
 function GameOver:exitedState()
-    -- Playing music.
+    -- Stopping music.
     music.main:stop()
 end
